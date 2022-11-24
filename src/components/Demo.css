@@ -1,0 +1,7 @@
+.demo-chart {
+	width: 100vw;
+	/* background-color: #dcfaea; */
+}
+.demo-chart > * {
+	width: 100vw;
+}
