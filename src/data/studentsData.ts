@@ -1,5 +1,6 @@
 import data from './studentsPerformance.json'
 
+// ************* Gender distribution *************
 const genderData = data.map(object => object.gender)
 // ['male', 'female', 'female', ...]
 let genderLabels: string[] = [], genderCount: any = {}
@@ -10,7 +11,7 @@ for( let i=0; i<genderData.length; i++ ) {
 	if (genderCount[genderData[i]] === undefined ) {
 		genderCount[genderData[i]] = 1
 	} else {
-		genderCount[genderData[i]]++   // { male: 57, female: 48 }
+		genderCount[genderData[i]]++   // { male: 482, female: 518 }
 	}
 }
 // console.log('Student data, genderCount: ', genderCount)
@@ -33,7 +34,35 @@ const genderDiagramData = {
 	],
 	labels: genderLabels
 }
-export { genderDiagramData }
+
+
+// ************* Average math scores *************
+let mathScores: any = {}
+data.map(object => {
+	let score: number = object['math score']
+	let gender = object.gender
+	if( mathScores[gender] === undefined ) {
+		mathScores[gender] = score
+	} else {
+		mathScores[gender] += score
+	}
+})
+genderLabels.forEach(label => {
+	let count: number = genderCount[label]
+	mathScores[label] = mathScores[label] / count
+})
+
+const mathDiagramData = {
+	labels: genderLabels,
+	datasets: [
+		{
+			data: mathScores,
+			label: 'Average score',
+			backgroundColor: ['#c193a2', '#a2c193']
+		}
+	]
+}
+export { genderDiagramData, mathDiagramData }
 /* kodexempel från dokumentationen
 data = {
     datasets: [{
