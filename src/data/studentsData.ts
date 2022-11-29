@@ -62,7 +62,52 @@ const mathDiagramData = {
 		}
 	]
 }
-export { genderDiagramData, mathDiagramData }
+
+// ************* Scatter plot, math scores *************
+let scatterSeries: any = {}
+data.forEach(object => {
+	let gender: string = object.gender
+	let score: number = object['math score']
+
+	if( scatterSeries[gender] === undefined ) {
+		scatterSeries[gender] = [
+			{ x: 0, y: score }
+		]
+	} else {
+		scatterSeries[gender].push({
+			// x kommer vara 0, 1, 2, 3 osv.
+			x: scatterSeries[gender].length, y: score
+		})
+	}
+})
+const palette: string[] = ['#c193a2', '#a2c193']  // ha med så många färger som det finns olika värden på "gender"
+type Point = {
+	x: number;
+	y: number;
+}
+type Dataset = {
+	label: string;
+	data: Point[];
+	backgroundColor: string;
+}
+type DiagramData = {
+	datasets: Dataset[];
+}
+const scatterDiagramData: DiagramData = {
+	// [ { label, data, backgroundColor }, ... ]
+	datasets: []
+}
+genderLabels.forEach((label, index) => {
+	let dataset: Dataset = {
+		label: label,
+		data: scatterSeries[label],
+		backgroundColor: palette[index]
+	}
+	scatterDiagramData.datasets.push(dataset)
+})
+console.log('Student data scatter:', scatterDiagramData)
+
+export { genderDiagramData, mathDiagramData, scatterDiagramData }
 /* kodexempel från dokumentationen
 data = {
     datasets: [{
